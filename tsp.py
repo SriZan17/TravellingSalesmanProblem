@@ -5,6 +5,7 @@ from typing import Tuple, List, Any
 from chromosome import Chromosome
 from genetic_algorithm import GeneticAlgorithm
 from random import sample
+import matplotlib.pyplot as plt
 
 
 def main():
@@ -30,6 +31,11 @@ def main():
         crossover_chance=CROSSOVER_CHANCE,
     )
     result: TSP = ga.run()
+    # plot the result
+    x = [city[0] for city in result.lst]
+    y = [city[1] for city in result.lst]
+    plt.plot(x, y, "ro-")
+    plt.show()
     print(result)
 
 
