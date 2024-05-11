@@ -8,7 +8,7 @@ from random import sample
 
 
 def main():
-    CITIES = [(0, 0), (1, 5), (5, 2), (2, 3), (6, 4), (7, 1), (8, 6), (9, 7), (10, 8)]
+    CITIES = [(0, 0), (1, 5), (5, 2), (2, 3), (6, 4), (7, 7), (8, 6), (9, 7), (10, 8)]
     POPULATION_SIZE: int = 100
     THRESHOLD: float = 0.90
     MAX_GENERATIONS: int = 100
@@ -53,10 +53,10 @@ class TSP(Chromosome):
 
     @classmethod
     def random_instance(cls, cities) -> TSP:
-        return TSP(sample(cities, k=len(cities)))
+        return TSP([cities[0]] + sample(cities[1:], k=len(cities) - 1) + [cities[0]])
 
     def crossover(self, other: TSP) -> Tuple[TSP, TSP]:
-        idx1, idx2 = sorted(sample(range(len(self.lst)), k=2))
+        idx1, idx2 = sorted(sample(range(1, len(self.lst) - 1), k=2))
         middle1 = self.lst[idx1:idx2]
         middle2 = other.lst[idx1:idx2]
 
@@ -67,7 +67,7 @@ class TSP(Chromosome):
         return get_child(middle1, other), get_child(middle2, self)
 
     def mutate(self) -> None:  # swap two locations
-        idx1, idx2 = sample(range(len(self.lst)), k=2)
+        idx1, idx2 = sample(range(1, len(self.lst) - 1), k=2)
         self.lst[idx1], self.lst[idx2] = self.lst[idx2], self.lst[idx1]
 
     def __str__(self) -> str:
